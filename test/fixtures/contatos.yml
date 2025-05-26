@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tipo: MyString
+  valor: MyString
+  proponente: one
+
+two:
+  tipo: MyString
+  valor: MyString
+  proponente: two

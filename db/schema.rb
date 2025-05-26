@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_26_152821) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_170605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "contatos", force: :cascade do |t|
+    t.string "tipo"
+    t.string "valor"
+    t.bigint "proponente_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["proponente_id"], name: "index_contatos_on_proponente_id"
+  end
 
   create_table "enderecos", force: :cascade do |t|
     t.string "logradouro"
@@ -37,5 +46,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_26_152821) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "contatos", "proponentes"
   add_foreign_key "enderecos", "proponentes"
 end
