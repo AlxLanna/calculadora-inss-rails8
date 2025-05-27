@@ -40,33 +40,43 @@ Para verificar o estilo do código e as boas práticas com o RuboCop:
     docker compose exec app bundle exec rubocop -A
     ```
     
-    ## Cronograma do Desafio (3 Dias)
+## Cronograma do Desafio (3 Dias)
 
-### Primeiro dia: Fundação, Docker, Modelagem Inicial e Configurações
+<details>
+  <summary><strong>### Primeiro dia: Fundação, Docker, Modelagem Inicial e Configurações</strong></summary>
 
-* ~~Criar e configurar o ambiente de desenvolvimento com Docker;~~
-* ~~Criar e configurar o repositório no GitHub (branch `desenvolvimento`);~~
-* ~~Criar o projeto em Rails + PostgreSQL e testar a conexão com o servidor;~~
-* ~~Modelagem de dados inicial:~~
+  * ~~Criar e configurar o ambiente de desenvolvimento com Docker;~~
+  * ~~Criar e configurar o repositório no GitHub (branch `desenvolvimento`);~~
+  * ~~Criar o projeto em Rails + PostgreSQL e testar a conexão com o servidor;~~
+  * ~~Modelagem de dados inicial:~~
     * ~~Criação dos modelos `Proponente`, `Endereco`, `Contato` e suas migrações.~~
     * ~~Definição das associações básicas entre os modelos.~~
     * ~~Implementação do serviço `CalculadoraInss` para lógica de cálculo do INSS (com faixas carregadas de arquivo YAML).~~
-* ~~Configurar RuboCop para padronização e qualidade de código;~~
-* Início do `README.md` (documentação inicial e instruções de setup). *(Tarefa atual)*
+  * ~~Configurar RuboCop para padronização e qualidade de código;~~
+  * ~~Início do `README.md` (documentação inicial e instruções de setup).~~ *(Concluído)*
+</details>
 
-### Segundo dia: Lógica de Negócio Principal e Backend
+<br>
 
-* Desenvolvimento do backend e o CRUD completo para Proponente (incluindo Endereços e Contatos aninhados, se aplicável).
-* Desenvolver lógica do cálculo do INSS assíncrono no formulário do proponente.
-* Criar background job com SolidQueue (ex: para notificação ou processamento após criação de novo proponente - o desafio requer "Incluir alguma job (onde achar que melhor se encaixa)" como Mínimo).
-* Popular o banco de dados com dados de teste (seeds - mínimo 10 registros).
-* Escrever testes (ex: com RSpec, que é "Desejado").
+<details>
+  <summary><strong>### Segundo dia: Lógica de Negócio Principal e Backend</strong></summary>
 
-### Terceiro dia: Funcionalidades Adicionais, Relatórios e Finalização
+  * Desenvolvimento do backend e o CRUD completo para Proponente (incluindo Endereços e Contatos aninhados, se aplicável).
+  * Desenvolver lógica do cálculo do INSS assíncrono no formulário do proponente.
+  * Criar background job com SolidQueue (ex: para notificação ou processamento após criação de novo proponente - o desafio requer "Incluir alguma job (onde achar que melhor se encaixa)" como Mínimo).
+  * Popular o banco de dados com dados de teste (seeds - mínimo 10 registros).
+  * Escrever testes (ex: com RSpec, que é "Desejado").
+</details>
 
-* Finalizar qualquer possível pendência do dia 2.
-* Desenvolver o Dashboard/Relatório de proponentes por faixa salarial (com listagem e gráfico).
-* Implementar autenticação de usuários (ex: com Devise, que é "Desejado").
-* Finalizar o `README.md` com todas as instruções e detalhes do projeto.
-* Reforçar a documentação interna do código.
-* Revisão final e preparação para entrega.
+<br>
+
+<details>
+  <summary><strong>### Terceiro dia: Funcionalidades Adicionais, Relatórios e Finalização</strong></summary>
+
+  * Finalizar qualquer possível pendência do dia 2.
+  * Desenvolver o Dashboard/Relatório de proponentes por faixa salarial (com listagem e gráfico).
+  * Implementar autenticação de usuários (ex: com Devise, que é "Desejado").
+  * Finalizar o `README.md` com todas as instruções e detalhes do projeto.
+  * Reforçar a documentação interna do código.
+  * Revisão final e preparação para entrega.
+</details>
