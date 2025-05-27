@@ -1,24 +1,72 @@
-# README
+# Desafio Técnico Credishop - Cálculo de Desconto INSS
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Este projeto é uma solução para o desafio técnico proposto pela Credishop. O objetivo é criar uma aplicação web para realizar o cálculo do desconto de INSS com base no salário do proponente, permitir o cadastro de proponentes com seus respectivos endereços e contatos, e exibir um relatório/dashboard de proponentes agrupados por faixas salariais.
 
-Things you may want to cover:
+## Tecnologias Utilizadas
 
-* Ruby version
+As principais tecnologias utilizadas neste projeto incluem:
 
-* System dependencies
+* Ruby on Rails (versão 8.0.2)
+* PostgreSQL (versão 15.3)
+* Bootstrap (versão 5.x, será adicionado para o frontend)
+* Docker e Docker Compose (para o ambiente de desenvolvimento)
+* SolidQueue (para gerenciamento de background jobs)
+* RuboCop (com `rubocop-rails-omakase` para linting e formatação de código)
 
-* Configuration
+## Executando a Aplicação
 
-* Database creation
+Após concluir todos os passos de "Configuração e Instalação do Ambiente (Docker)":
 
-* Database initialization
+1.  Certifique-se de que os containers Docker estejam em execução:
+    ```bash
+    docker compose ps
+    ```
+    *(Você deve ver os serviços `app` e `db` com o status "running" ou "up").*
 
-* How to run the test suite
+2.  Acesse a aplicação no seu navegador:
+    * Abra `http://localhost:3000`
+    
+    ## Executando RuboCop
 
-* Services (job queues, cache servers, search engines, etc.)
+Para verificar o estilo do código e as boas práticas com o RuboCop:
 
-* Deployment instructions
+1.  Para inspecionar todos os arquivos e listar as ofensas:
+    ```bash
+    docker compose exec app bundle exec rubocop
+    ```
 
-* ...
+2.  Para tentar corrigir automaticamente as ofensas que são seguras para auto-correção:
+    ```bash
+    docker compose exec app bundle exec rubocop -A
+    ```
+    
+    ## Cronograma do Desafio (3 Dias)
+
+### Primeiro dia: Fundação, Docker, Modelagem Inicial e Configurações
+
+* ~~Criar e configurar o ambiente de desenvolvimento com Docker;~~
+* ~~Criar e configurar o repositório no GitHub (branch `desenvolvimento`);~~
+* ~~Criar o projeto em Rails + PostgreSQL e testar a conexão com o servidor;~~
+* ~~Modelagem de dados inicial:~~
+    * ~~Criação dos modelos `Proponente`, `Endereco`, `Contato` e suas migrações.~~
+    * ~~Definição das associações básicas entre os modelos.~~
+    * ~~Implementação do serviço `CalculadoraInss` para lógica de cálculo do INSS (com faixas carregadas de arquivo YAML).~~
+* ~~Configurar RuboCop para padronização e qualidade de código;~~
+* Início do `README.md` (documentação inicial e instruções de setup). *(Tarefa atual)*
+
+### Segundo dia: Lógica de Negócio Principal e Backend
+
+* Desenvolvimento do backend e o CRUD completo para Proponente (incluindo Endereços e Contatos aninhados, se aplicável).
+* Desenvolver lógica do cálculo do INSS assíncrono no formulário do proponente.
+* Criar background job com SolidQueue (ex: para notificação ou processamento após criação de novo proponente - o desafio requer "Incluir alguma job (onde achar que melhor se encaixa)" como Mínimo).
+* Popular o banco de dados com dados de teste (seeds - mínimo 10 registros).
+* Escrever testes (ex: com RSpec, que é "Desejado").
+
+### Terceiro dia: Funcionalidades Adicionais, Relatórios e Finalização
+
+* Finalizar qualquer possível pendência do dia 2.
+* Desenvolver o Dashboard/Relatório de proponentes por faixa salarial (com listagem e gráfico).
+* Implementar autenticação de usuários (ex: com Devise, que é "Desejado").
+* Finalizar o `README.md` com todas as instruções e detalhes do projeto.
+* Reforçar a documentação interna do código.
+* Revisão final e preparação para entrega.
