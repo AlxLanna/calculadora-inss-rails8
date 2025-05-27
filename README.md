@@ -26,7 +26,7 @@ Após concluir todos os passos de "Configuração e Instalação do Ambiente (Do
 2.  Acesse a aplicação no seu navegador:
     * Abra `http://localhost:3000`
     
-    ## Executando RuboCop
+## Executando RuboCop
 
 Para verificar o estilo do código e as boas práticas com o RuboCop:
 
@@ -43,7 +43,7 @@ Para verificar o estilo do código e as boas práticas com o RuboCop:
 ## Cronograma do Desafio (3 Dias)
 
 <details>
-  <summary><strong>### Primeiro dia: Fundação, Docker, Modelagem Inicial e Configurações</strong></summary>
+  <summary><strong>Primeiro dia: Fundação, Docker, Modelagem Inicial e Configurações</strong></summary>
 
   * ~~Criar e configurar o ambiente de desenvolvimento com Docker;~~
   * ~~Criar e configurar o repositório no GitHub (branch `desenvolvimento`);~~
@@ -59,7 +59,7 @@ Para verificar o estilo do código e as boas práticas com o RuboCop:
 <br>
 
 <details>
-  <summary><strong>### Segundo dia: Lógica de Negócio Principal e Backend</strong></summary>
+  <summary><strong>Segundo dia: Lógica de Negócio Principal e Backend</strong></summary>
 
   * Desenvolvimento do backend e o CRUD completo para Proponente (incluindo Endereços e Contatos aninhados, se aplicável).
   * Desenvolver lógica do cálculo do INSS assíncrono no formulário do proponente.
@@ -71,7 +71,7 @@ Para verificar o estilo do código e as boas práticas com o RuboCop:
 <br>
 
 <details>
-  <summary><strong>### Terceiro dia: Funcionalidades Adicionais, Relatórios e Finalização</strong></summary>
+  <summary><strong>Terceiro dia: Funcionalidades Adicionais, Relatórios e Finalização</strong></summary>
 
   * Finalizar qualquer possível pendência do dia 2.
   * Desenvolver o Dashboard/Relatório de proponentes por faixa salarial (com listagem e gráfico).
