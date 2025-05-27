@@ -41,7 +41,7 @@ class CalculadoraInss
 
     salario_calculo = [@salario, teto_contribuicao].min
 
-    # Percorre FAIXAS verificando onde o salário se encaixa
+    # Percorre as faixas em 'tabela_inss.yml' verificando onde o salário se encaixa
     @faixas_config.each do |faixa|
       # Interrompe se o salário já foi totalmente processado pelas faixas anteriores
       break if salario_calculo <= limite_anterior
@@ -66,7 +66,7 @@ class CalculadoraInss
     caminho_arquivo = Rails.root.join('config', 'tabela_inss.yml')
 
     unless File.exist?(caminho_arquivo)
-      Rails.logger.error " YAML NÃO ENCONTRADO: #{caminho_arquivo} "
+      Rails.logger.error " YAML NÃO ENCONTRADO EM: #{caminho_arquivo} "
       return [] 
     end
 
@@ -83,7 +83,7 @@ class CalculadoraInss
     end.compact # Remove quaisquer 'nil' se alguma faixa no YAML estiver incompleta
 
   rescue Psych::SyntaxError => e # Trata erros de sintaxe no arquivo YAML
-    Rails.logger.error "erro de sintaxe --- tabela_inss.yml: #{e.message}"
+    Rails.logger.error "ERRO DE SINTAXE --- tabela_inss.yml: #{e.message}"
     return []
   rescue StandardError => e # Trata outros erros possíveis ao carregar/processar o YAML
     Rails.logger.error " ERRO AO CARREGAR TABELA INSS DO YAML: #{e.message} "
