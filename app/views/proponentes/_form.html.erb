@@ -1,0 +1,60 @@
+<%# app/views/proponentes/_form.html.erb %>
+
+<%= form_with(model: proponente, local: false, data: { controller: "proponente-form" }) do |f| %>
+  <% if proponente.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(proponente.errors.count, "erro") %> impediram que este proponente fosse salvo:</h2>
+      <ul>
+        <% proponente.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h3>Dados do Proponente</h3>
+  <div class="mb-3">
+    <%= f.label :nome %>
+    <%= f.text_field :nome, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :documentos, "Documentos (CPF/RG)" %>
+    <%= f.text_field :documentos, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :data_nascimento, "Data de Nascimento" %>
+    <%= f.date_field :data_nascimento, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :salario, "Salário (R$)" %>
+    <%= f.number_field :salario, step: :any, class: "form-control", data: { action: "input->proponente-form#calcularInss" } %>
+    <small id="inss_desconto_exibicao" class="form-text text-muted">Desconto INSS: R$ 0,00</small>
+    <%= f.hidden_field :desconto_inss %> <%# Campo oculto para o valor do INSS %>
+  </div>
+
+  <hr>
+
+  <h3>Endereços</h3>
+  <div id="enderecos_fields">
+    <%= f.fields_for :enderecos do |endereco_fields| %>
+      <%= render "endereco_fields", f: endereco_fields %>
+    <% end %>
+  </div>
+  <button type="button" class="btn btn-secondary mb-3" data-action="click->proponente-form#addEndereco">Adicionar Endereço</button>
+
+  <hr>
+
+  <h3>Contatos</h3>
+  <div id="contatos_fields">
+    <%= f.fields_for :contatos do |contato_fields| %>
+      <%= render "contato_fields", f: contato_fields %>
+    <% end %>
+  </div>
+  <button type="button" class="btn btn-secondary mb-3" data-action="click->proponente-form#addContato">Adicionar Contato</button>
+
+  <hr>
+
+  <div class="mb-3">
+    <%= f.submit "Salvar Proponente", class: "btn btn-primary", data: { action: "proponente-form#submitForm" } %>
+  </div>
+<% end %>

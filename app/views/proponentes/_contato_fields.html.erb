@@ -1,0 +1,24 @@
+<%# app/views/proponentes/_contato_fields.html.erb %>
+<div class="nested-fields mb-3 p-3 border rounded bg-light">
+  <h5>Contato</h5>
+  <div class="mb-2">
+    <%= f.label :tipo %>
+    <%= f.select :tipo,
+                  options_for_select([['Telefone Residencial', 'telefone_residencial'],
+                                      ['Celular', 'celular'],
+                                      ['WhatsApp', 'whatsapp'],
+                                      ['Email', 'email']], f.object.tipo),
+                  { include_blank: 'Selecione o Tipo' },
+                  { class: "form-control" } %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :valor %>
+    <%= f.text_field :valor, class: "form-control" %>
+  </div>
+  <% if f.object.persisted? %>
+    <div class="form-check mb-2">
+      <%= f.check_box :_destroy, class: "form-check-input" %>
+      <%= f.label :_destroy, "Remover Contato", class: "form-check-label" %>
+    </div>
+  <% end %>
+</div>
