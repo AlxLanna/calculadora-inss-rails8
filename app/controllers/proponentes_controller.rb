@@ -38,7 +38,7 @@ class ProponentesController < ApplicationController
 
   # Endpoint para calcular o INSS e retornar via JSON.
   def calcular_inss
-    salario_bruto = params[:salario] 
+    salario_bruto = params[:salario]
     # Chama o service object para calcular o desconto
     desconto = CalculadoraInss.calculate(salario_bruto)
     render json: { desconto_inss: desconto }
