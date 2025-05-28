@@ -1,4 +1,4 @@
-# app/services/inss_calculator_service.rb
+# app/services/calculadora_inss.rb
 
 require 'yaml'
 require 'bigdecimal'

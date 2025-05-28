@@ -1,4 +1,7 @@
 class ProponentesController < ApplicationController
+  # TODO remover essa linha
+  protect_from_forgery except: [ :enfileirar_proponente ]
+
   def index
   end
 
@@ -13,16 +16,10 @@ class ProponentesController < ApplicationController
     @proponente.contatos.build
   end
 
-  def create
-    @proponente = Proponente.new(proponente_params)
-
-    if @proponente.save
-      redirect_to @proponente, notice: "Proponente criado com sucesso!"
-    else
-      # Se a validação falhar, os objetos aninhados com erros serão mantidos
-      render :new, status: :unprocessable_entity
-    end
-  end
+  # =========================================================================
+  # AS AÇÕES 'CREATE' E 'UPDATE' SÃO TRATADAS PELO BACKGROUND JOB
+  # E ENFILEIRADAS PELO MÉTODO 'ENFILEIRAR_PROPONENTE'.
+  # =========================================================================
 
   def edit
     @proponente = Proponente.find(params[:id])
@@ -32,18 +29,37 @@ class ProponentesController < ApplicationController
     @proponente.contatos.build if @proponente.contatos.empty?
   end
 
-  def update
-    @proponente = Proponente.find(params[:id])
-
-    if @proponente.update(proponente_params)
-      redirect_to @proponente, notice: "Proponente atualizado com sucesso!"
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
   def destroy
   end
+
+  # =========================================================================
+  # REQUISIÇÕES ASSÍNCRONAS E BACKGROUND JOB
+  # =========================================================================
+
+  # Endpoint para calcular o INSS e retornar via JSON.
+  def calcular_inss
+    salario_bruto = params[:salario] 
+    # Chama o service object para calcular o desconto
+    desconto = CalculadoraInss.calculate(salario_bruto)
+    render json: { desconto_inss: desconto }
+  end
+
+  # Endpoint para receber os dados do formulário via AJAX e enfileirar o job.
+  # Destino da submissão do formulário pelo Stimulus.
+  def enfileirar_proponente
+    # proponente_params.to_unsafe_h converte os parâmetros filtrados para um hash.
+    # Usamos to_unsafe_h aqui para passar os parâmetros para o job.
+    # O job será responsável por usar esses parâmetros para criar ou atualizar o Proponente.
+    ProponenteJob.perform_later(proponente_params.to_unsafe_h)
+
+    # Retorna uma resposta JSON rápida para o frontend, indicando que o job foi enfileirado.
+    render json: { status: "ok", message: "Proponente enfileirado para processamento." }
+  rescue => e
+    # Em caso de erro ao enfileirar (raro, mas possível), retorna um erro para o frontend.
+    render json: { status: "error", message: e.message }, status: :unprocessable_entity
+  end
+
+  # =========================================================================
 
   private
 
