@@ -27,15 +27,17 @@
   </div>
   <div class="mb-3">
     <%= f.label :salario, "Salário (R$)" %>
-    <%= f.number_field :salario, step: :any, class: "form-control", data: { action: "input->proponente-form#calcularInss" } %>
-    <small id="inss_desconto_exibicao" class="form-text text-muted">Desconto INSS: R$ 0,00</small>
-    <%= f.hidden_field :desconto_inss %> <%# Campo oculto para o valor do INSS %>
+    <%= f.number_field :salario, step: :any, class: "form-control",
+                       data: { action: "input->proponente-form#calcularInss", "proponente-form-target": "salarioInput" } %>
+    <small id="inss_desconto_exibicao" class="form-text text-muted"
+           data-proponente-form-target="inssDescontoExibicao">Desconto INSS: R$ 0,00</small>
+    <%= f.hidden_field :desconto_inss, data: { "proponente-form-target": "inssDescontoHidden" } %>
   </div>
 
   <hr>
 
   <h3>Endereços</h3>
-  <div id="enderecos_fields">
+  <div id="enderecos_fields" data-proponente-form-target="enderecosFields">
     <%= f.fields_for :enderecos do |endereco_fields| %>
       <%= render "endereco_fields", f: endereco_fields %>
     <% end %>
@@ -45,7 +47,7 @@
   <hr>
 
   <h3>Contatos</h3>
-  <div id="contatos_fields">
+  <div id="contatos_fields" data-proponente-form-target="contatosFields">
     <%= f.fields_for :contatos do |contato_fields| %>
       <%= render "contato_fields", f: contato_fields %>
     <% end %>
@@ -57,4 +59,22 @@
   <div class="mb-3">
     <%= f.submit "Salvar Proponente", class: "btn btn-primary", data: { action: "proponente-form#submitForm" } %>
   </div>
+
+  <%# ==================================================================== %>
+  <%# Templates para campos aninhados (escondidos)                         %>
+  <%# O JavaScript irá clonar e usar estes templates para adicionar campos %>
+  <%# ==================================================================== %>
+
+  <template id="enderecos_template">
+    <%= f.fields_for :enderecos, Proponente.new.enderecos.build, child_index: "NEW_RECORD" do |endereco_fields| %>
+      <%= render "endereco_fields", f: endereco_fields %>
+    <% end %>
+  </template>
+
+  <template id="contatos_template">
+    <%= f.fields_for :contatos, Proponente.new.contatos.build, child_index: "NEW_RECORD" do |contato_fields| %>
+      <%= render "contato_fields", f: contato_fields %>
+    <% end %>
+  </template>
+
 <% end %>

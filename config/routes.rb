@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Rotas padrão para o recurso Proponentes (index, show, new, edit)
-  resources :proponentes, only: [:index, :show, :new, :edit] do
+  resources :proponentes, only: [ :index, :show, :new, :edit ] do
     # Endpoint para calcular o INSS via AJAX (GET ou POST, GET é comum para consulta)
     collection do
       get :calcular_inss
@@ -9,6 +9,6 @@ Rails.application.routes.draw do
     end
   end
 
-  
+
   root "proponentes#index"
 end
