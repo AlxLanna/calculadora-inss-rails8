@@ -54,7 +54,7 @@ export default class extends Controller {
         .catch(error => {
           console.error("Erro ao calcular INSS:", error);
           this.inssDescontoExibicaoTarget.textContent = "Desconto INSS: Erro no cálculo";
-          this.inssDescontoHiddenTarget.value = "0.00";
+          this.inssDescontoHiddenTarget.value = "sem valor definido";
         });
     }, 500); // Debounce de 500ms para não disparar muitas requisições
   }
