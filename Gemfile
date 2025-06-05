@@ -49,6 +49,13 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  
+  # Popular db
+  gem "faker", "~> 2.0" 
+  
+  #Paginação
+  gem "kaminari" 
+  
 end
 
 group :development do

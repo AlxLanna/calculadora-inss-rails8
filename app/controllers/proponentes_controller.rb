@@ -3,6 +3,8 @@ class ProponentesController < ApplicationController
   protect_from_forgery except: [ :enfileirar_proponente ]
 
   def index
+    # Paginação
+    @proponentes = Proponente.page(params[:page]).per(5)
   end
 
   def show
