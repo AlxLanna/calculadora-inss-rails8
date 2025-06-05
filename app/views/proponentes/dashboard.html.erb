@@ -6,7 +6,7 @@
   <div class="col-md-8">
     <h3>Distribuição Salarial (Gráfico)</h3>
     <div style="height: 400px; width: 100%;">
-      <%= pie_chart @proponentes_por_faixa_ordenada, title: "Proponentes por Faixa Salarial", legend: "bottom" %>
+      <%= column_chart @proponentes_por_faixa_ordenada, title: "Proponentes por Faixa Salarial", legend: "bottom" %>
       <%# Outras opções: bar_chart, column_chart %>
     </div>
   </div>
