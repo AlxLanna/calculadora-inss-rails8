@@ -19,13 +19,13 @@ class ProponenteJob < ApplicationJob
         if proponente.update(proponente_params)
           Rails.logger.info "Proponente #{proponente.id} atualizado com sucesso em background."
         else # log no terminal
-          Rails.logger.error "Falha ao atualizar proponente #{proponente.id} em background: #{proponente.errors.full_messages.to_sentence}" 
+          Rails.logger.error "Falha ao atualizar proponente #{proponente.id} em background: #{proponente.errors.full_messages.to_sentence}"
 
           # Em um ambiente de produção, aqui seria o local para:
           # - Notificar um administrador (ex: via email ou sistema de alertas)
           # - Registrar o erro em um sistema de monitoramento de erros (ex: Sentry, Rollbar)
           # - Ou, para falhas transitórias, enfileirar um job de retentativa (com um limite para evitar loops infinitos).
-        
+
         end
       else
         Rails.logger.error "Proponente com ID #{proponente_id} não encontrado para atualização em background."

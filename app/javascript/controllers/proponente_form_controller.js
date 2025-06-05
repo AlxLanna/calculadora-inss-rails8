@@ -77,7 +77,6 @@ export default class extends Controller {
     this.addNestedFields(this.contatosFieldsTarget, this.templateContato, 'contatos');
   }
 
-  // Método auxiliar para adicionar campos aninhados (genérico)
   addNestedFields(targetContainer, template, association) {
     if (!template) {
       console.error(`Template para ${association} não encontrado! Verifique o HTML.`);
@@ -86,13 +85,19 @@ export default class extends Controller {
 
     const newId = new Date().getTime(); // Gera um ID único para os novos campos
     // Substitui o placeholder NEW_RECORD pelo ID único
-    const newContent = template.replace(new RegExp(`${association}_NEW_RECORD`, 'g'), `<span class="math-inline">\{association\}\_</span>{newId}`)
-                             .replace(/NEW_RECORD/g, newId);
+    const newContent = template.replace(new RegExp(`${association}\\[NEW_RECORD\\]`, 'g'), `${association}[${newId}]`)
+                             .replace(/NEW_RECORD/g, newId)
+    ;
 
 
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = newContent.trim();
-    const newField = tempDiv.firstChild; // Pega o primeiro elemento gerado
+    const newField = tempDiv.firstElementChild; // Pega o primeiro elemento gerado
+
+    if (!newField) {
+      console.error(`Falha ao criar novo campo para ${association}. newField é nulo ou indefinido. Conteúdo HTML:`, newContent);
+      return;
+    }
 
     // Adiciona classes para o novo campo e um botão de remover
     newField.classList.add('newly-added-field');
