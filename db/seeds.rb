@@ -29,12 +29,12 @@ puts "Criando proponentes com dados fictícios..."
     )
   end
 
-  # Adiciona entre 2 e 4 contatos para cada proponente
-  Faker::Number.between(from: 2, to: 4).times do
-    tipo_contato = ['telefone_residencial', 'celular', 'whatsapp', 'email'].sample
+  # Adiciona entre 1 e 3 contatos para cada proponente
+  Faker::Number.between(from: 1, to: 3).times do
+    tipo_contato = ['telefone_residencial', 'celular', 'email'].sample
     valor_contato = case tipo_contato
                     when 'email' then Faker::Internet.email
-                    when 'celular', 'whatsapp' then Faker::PhoneNumber.cell_phone_with_country_code
+                    when 'celular' then Faker::PhoneNumber.cell_phone_with_country_code
                     else Faker::PhoneNumber.phone_number
                     end
 

@@ -6,7 +6,6 @@
     <%= f.select :tipo,
                   options_for_select([['Telefone Residencial', 'telefone_residencial'],
                                       ['Celular', 'celular'],
-                                      ['WhatsApp', 'whatsapp'],
                                       ['Email', 'email']], f.object.tipo),
                   { include_blank: 'Selecione o Tipo' },
                   { class: "form-control" } %>

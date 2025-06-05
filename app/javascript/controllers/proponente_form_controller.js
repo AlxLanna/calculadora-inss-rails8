@@ -95,7 +95,7 @@ export default class extends Controller {
     const newField = tempDiv.firstChild; // Pega o primeiro elemento gerado
 
     // Adiciona classes para o novo campo e um botão de remover
-    newField.classList.add('newly-added-field'); // Para fácil identificação
+    newField.classList.add('newly-added-field');
     newField.style.opacity = '0'; // Começa invisível para fade-in
 
     const removeButton = document.createElement('button');
