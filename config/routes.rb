@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       post :enfileirar_proponente
     end
   end
-  
+
   get "dashboard", to: "proponentes#dashboard"
 
   root "proponentes#index"

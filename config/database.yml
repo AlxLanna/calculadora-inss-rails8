@@ -3,17 +3,16 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: db
-  # host: localhost #para rodar a app fora do docker
 
 development:
   <<: *default
-  database: desafio_credishop_development
+  database: calculadora_inss_development
   username: postgres
   password: <%= ENV['POSTGRES_PASSWORD'] %>
 
 test:
   <<: *default
-  database: desafio_credishop_test
+  database: calculadora_inss_test
   username: postgres
   password: <%= ENV['POSTGRES_PASSWORD'] %>
 

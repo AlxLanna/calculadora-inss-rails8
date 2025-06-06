@@ -36,17 +36,17 @@ class ProponentesController < ApplicationController
 
   def dashboard
     # Carrega as faixas salariais do YAML
-    faixas_config_raw = YAML.load_file(Rails.root.join('config', 'tabela_inss.yml'))['faixas_atuais']
+    faixas_config_raw = YAML.load_file(Rails.root.join("config", "tabela_inss.yml"))["faixas_atuais"]
 
-    # Mapeia as faixas 
+    # Mapeia as faixas
     faixas_salariais = {}
     faixas_config_raw.each_with_index do |faixa, index|
-      limite_max = faixa['limite_max'].to_f
+      limite_max = faixa["limite_max"].to_f
       label = case index
-              when 0 then "Até R$ #{'%.2f' % limite_max}"
-              when faixas_config_raw.length - 1 then "De R$ #{'%.2f' % (faixas_config_raw[index-1]['limite_max'].to_f + 0.01)} a R$ #{'%.2f' % limite_max}"
-              else "De R$ #{'%.2f' % (faixas_config_raw[index-1]['limite_max'].to_f + 0.01)} a R$ #{'%.2f' % limite_max}"
-              end
+      when 0 then "Até R$ #{'%.2f' % limite_max}"
+      when faixas_config_raw.length - 1 then "De R$ #{'%.2f' % (faixas_config_raw[index-1]['limite_max'].to_f + 0.01)} a R$ #{'%.2f' % limite_max}"
+      else "De R$ #{'%.2f' % (faixas_config_raw[index-1]['limite_max'].to_f + 0.01)} a R$ #{'%.2f' % limite_max}"
+      end
       faixas_salariais[label] = limite_max
     end
 
@@ -59,14 +59,14 @@ class ProponentesController < ApplicationController
       limite_inferior_anterior = 0.0 # Usado para calcular o limite inferior da faixa atual
 
       faixas_config_raw.each do |faixa_data|
-        limite_superior_faixa = faixa_data['limite_max'].to_f
+        limite_superior_faixa = faixa_data["limite_max"].to_f
 
         # Determina o label da faixa
         label = case faixas_config_raw.index(faixa_data)
-                when 0 then "Até R$ #{'%.2f' % limite_superior_faixa}"
-                when faixas_config_raw.length - 1 then "De R$ #{'%.2f' % (limite_inferior_anterior + 0.01)} a R$ #{'%.2f' % limite_superior_faixa}"
-                else "De R$ #{'%.2f' % (limite_inferior_anterior + 0.01)} a R$ #{'%.2f' % limite_superior_faixa}"
-                end
+        when 0 then "Até R$ #{'%.2f' % limite_superior_faixa}"
+        when faixas_config_raw.length - 1 then "De R$ #{'%.2f' % (limite_inferior_anterior + 0.01)} a R$ #{'%.2f' % limite_superior_faixa}"
+        else "De R$ #{'%.2f' % (limite_inferior_anterior + 0.01)} a R$ #{'%.2f' % limite_superior_faixa}"
+        end
 
         if proponente.salario <= limite_superior_faixa && proponente.salario > limite_inferior_anterior
           @proponentes_por_faixa[label] += 1
@@ -87,7 +87,7 @@ class ProponentesController < ApplicationController
     faixas_salariais.keys.each do |label| # Usa os labels formatados do hash faixas_salariais
       @proponentes_por_faixa_ordenada[label] = @proponentes_por_faixa[label] || 0
     end
-    
+
     # Adiciona a faixa "Acima do Teto" se houver proponentes nela
     acima_do_teto_label = "Acima de R$ #{'%.2f' % faixas_config_raw.last['limite_max'].to_f}"
     @proponentes_por_faixa_ordenada[acima_do_teto_label] = @proponentes_por_faixa[acima_do_teto_label] if @proponentes_por_faixa[acima_do_teto_label] > 0

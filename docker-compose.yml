@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: desafio_credishop_development
+      POSTGRES_DB: calculadora_inss_development
     ports:
       - "5432:5432"
 
@@ -21,8 +21,13 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:password@db:5432/desafio_credishop_development
+      DATABASE_URL: postgres://postgres:password@db:5432/calculadora_inss_development
       RAILS_ENV: development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: calculadora_inss_development
+      POSTGRES_DB_TEST: calculadora_inss_test
+      
 volumes:
   postgres_data:
   bundle_cache:
