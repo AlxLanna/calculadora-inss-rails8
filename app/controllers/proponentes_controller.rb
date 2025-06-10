@@ -1,6 +1,7 @@
 class ProponentesController < ApplicationController
-  # TODO remover essa linha
-  protect_from_forgery except: [ :enfileirar_proponente ]
+  
+  # Redireciona usuários não autenticados para a página de login
+  before_action :authenticate_user!
 
   def index
     # Paginação
@@ -130,7 +131,7 @@ class ProponentesController < ApplicationController
       :documentos,
       :data_nascimento,
       :salario,
-      :desconto_inss, # Este valor será retornado e gravado
+      :desconto_inss,
       enderecos_attributes: [
         :id,
         :logradouro,
