@@ -1,2 +1,60 @@
-<h1>Proponentes#show</h1>
-<p>Find me in app/views/proponentes/show.html.erb</p>
+<%# app/views/proponentes/show.html.erb %>
+
+<h1>Detalhes do Proponente</h1>
+
+<div class="card mb-4">
+  <div class="card-header">
+    Dados Pessoais
+  </div>
+  <div class="card-body">
+    <p><strong>Nome:</strong> <%= @proponente.nome %></p>
+    <p><strong>Documentos:</strong> <%= @proponente.documentos %></p>
+    <p><strong>Data de Nascimento:</strong> <%= l @proponente.data_nascimento %></p>
+    <p><strong>Salário:</strong> R$ <%= '%.2f' % @proponente.salario %></p>
+    <p><strong>Desconto INSS:</strong> R$ <%= '%.2f' % @proponente.desconto_inss %></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    Endereço(s)
+  </div>
+  <div class="card-body">
+    <% if @proponente.enderecos.any? %>
+      <ul class="list-group list-group-flush">
+        <% @proponente.enderecos.each do |endereco| %>
+          <li class="list-group-item">
+            <%= endereco.logradouro %>, <%= endereco.numero %> - <%= endereco.bairro %><br>
+            <%= endereco.cidade %>/<%= endereco.estado %> - CEP: <%= endereco.cep %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>Nenhum endereço cadastrado.</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-header">
+    Contato(s)
+  </div>
+  <div class="card-body">
+    <% if @proponente.contatos.any? %>
+      <ul class="list-group list-group-flush">
+        <% @proponente.contatos.each do |contato| %>
+          <li class="list-group-item">
+            <strong><%= contato.tipo.humanize %>:</strong> <%= contato.valor %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>Nenhum contato cadastrado.</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <%= link_to "Editar Proponente", edit_proponente_path(@proponente), class: "btn btn-warning me-2" %>
+  <%= link_to "Voltar para Listagem", proponentes_path, class: "btn btn-secondary" %>
+</div>
