@@ -5,7 +5,7 @@ class ProponentesController < ApplicationController
 
   def index
     # Paginação
-    @proponentes = Proponente.page(params[:page]).per(5)
+    @proponentes = Proponente.order(:nome).page(params[:page]).per(10)
   end
 
   def show
