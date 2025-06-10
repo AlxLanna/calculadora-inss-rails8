@@ -1,6 +1,9 @@
 <%# app/views/proponentes/_form.html.erb %>
 
 <%= form_with(model: proponente, url: enfileirar_proponente_proponentes_path, local: false, data: { controller: "proponente-form" }) do |f| %>
+  
+  <%= f.hidden_field :id %> 
+
   <% if proponente.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(proponente.errors.count, "erro") %> impediram que este proponente fosse salvo:</h2>

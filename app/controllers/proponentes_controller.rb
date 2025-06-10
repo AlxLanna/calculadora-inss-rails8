@@ -127,6 +127,7 @@ class ProponentesController < ApplicationController
 
   def proponente_params
     params.require(:proponente).permit(
+      :id,
       :nome,
       :documentos,
       :data_nascimento,

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     collection do
       get :calcular_inss
       # Endpoint para receber a submissão do formulário via AJAX e enfileirar o job
-      post :enfileirar_proponente
+      match :enfileirar_proponente, via: [:post, :patch]
     end
   end
 
