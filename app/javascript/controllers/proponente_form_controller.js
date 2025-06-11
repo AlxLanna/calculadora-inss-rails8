@@ -152,55 +152,62 @@ export default class extends Controller {
     const form = event.target.closest('form');
     const formData = new FormData(form);
 
-    // Remova os campos marcados para destruição da formData
-    // para evitar que sejam enviados com valor '1' se já foram hidden
-    form.querySelectorAll('.nested-fields input[name$="[_destroy]"]').forEach(input => {
-      if (input.type === 'hidden' && input.value === '1') {
-        const fieldContainer = input.closest('.nested-fields');
-        // Remove todos os campos filhos do container que está sendo destruído
-        fieldContainer.querySelectorAll('input, select, textarea').forEach(field => {
-          formData.delete(field.name);
-        });
-      }
-    });
-
-
-    // Garante que o método HTTP é POST para o endpoint do job
-    // O `form.action` seria a rota do proponente, precisamos ajustar para a rota de enfileirar.
-    // A rota de enfileirar é /proponentes/enfileirar_proponente
     const enfileirarUrl = `/proponentes/enfileirar_proponente`;
 
     // Desabilita o botão de submit para evitar múltiplos cliques
     this.element.querySelector('input[type="submit"]').disabled = true;
     this.element.querySelector('input[type="submit"]').value = "Processando...";
 
-
     fetch(enfileirarUrl, {
-      method: 'POST',
+      method: 'POST', 
       headers: {
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content // Para segurança do Rails
       },
       body: formData
     })
     .then(response => {
-      // A API de enfileiramento pode retornar sucesso ou erro, mas não necessariamente JSON do objeto salvo
-      if (!response.ok) {
-        return response.json().then(errorData => { throw new Error(errorData.error || 'Erro desconhecido'); });
+      // Se o status for 422 (unprocessable_entity), o backend está enviando erros de validação
+      if (response.status === 422) {
+        return response.json().then(errorData => {
+          // Lança um erro com as mensagens de validação para o bloco .catch lidar
+          // O errorData.errors virá do Rails como um array de strings
+          const errorMessage = errorData.message + (errorData.errors ? ": " + errorData.errors.join(", ") : "");
+          throw new Error(errorMessage);
+        });
       }
-      return response.json(); // Se o backend retornar JSON de sucesso
+      // Se não for sucesso (ex: 500 Internal Server Error, 403 Forbidden, etc.)
+      if (!response.ok) {
+        // Tentativa de ler o erro como JSON, caso o backend envie um JSON de erro genérico
+        return response.json().catch(() => {
+          // Se não conseguir ler como JSON, retorna a mensagem HTTP padrão
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }).then(errorData => {
+            // Se leu JSON, usa a mensagem de erro fornecida
+            throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        });
+      }
+      // Se a resposta for 200 OK (sucesso), espera JSON com dados (status, message, redirect_to)
+      return response.json();
+
     })
     .then(data => {
       console.log("Resposta do Job Enfileirado:", data);
-      alert("Proponente enviado para processamento em segundo plano!");
-      // Redireciona para a listagem ou mostra uma mensagem de sucesso
-      window.location.href = "/proponentes";
+      alert(data.message); // Exibe a mensagem de sucesso
+
+      // Redireciona para o caminho especificado pelo backend
+      if (data.redirect_to) {
+        window.location.href = data.redirect_to;
+      } else {
+        // Fallback, caso o backend não especifique um redirecionamento
+        window.location.href = "/proponentes";
+      }
     })
     .catch(error => {
-      console.error("Erro ao enfileirar proponente:", error);
+      console.error("Erro ao enviar proponente:", error);
       alert(`Ocorreu um erro ao enviar o proponente: ${error.message}. Tente novamente.`);
       // Reabilita o botão de submit em caso de erro
       this.element.querySelector('input[type="submit"]').disabled = false;
       this.element.querySelector('input[type="submit"]').value = "Salvar Proponente";
-    });
+    })
   }
 }

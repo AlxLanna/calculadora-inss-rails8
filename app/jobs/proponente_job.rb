@@ -3,7 +3,6 @@ class ProponenteJob < ApplicationJob
   queue_as :default
 
   def perform(proponente_params)
-    
     Rails.logger.info "ProponenteJob: Iniciando com params: #{proponente_params.inspect}" # <-- NOVO LOG
 
     proponente_id = proponente_params["id"]

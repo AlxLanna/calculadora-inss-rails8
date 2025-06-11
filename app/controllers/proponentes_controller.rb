@@ -1,5 +1,4 @@
 class ProponentesController < ApplicationController
-  
   # Redireciona usuários não autenticados para a página de login
   before_action :authenticate_user!
 
@@ -109,15 +108,37 @@ class ProponentesController < ApplicationController
   # Endpoint para receber os dados do formulário via AJAX e enfileirar o job.
   # Destino da submissão do formulário pelo Stimulus.
   def enfileirar_proponente
-    # proponente_params.to_unsafe_h converte os parâmetros filtrados para um hash.
-    # Usamos to_unsafe_h aqui para passar os parâmetros para o job.
-    # O job será responsável por usar esses parâmetros para criar ou atualizar o Proponente.
-    ProponenteJob.perform_later(proponente_params.to_unsafe_h)
+    params_hash = proponente_params.to_unsafe_h
 
-    # Retorna uma resposta JSON rápida para o frontend, indicando que o job foi enfileirado.
-    render json: { status: "ok", message: "Proponente enfileirado para processamento." }
+    # Cria ou encontra o proponente para validação prévia
+    proponente = if params_hash["id"].present?
+                   Proponente.find_by(id: params_hash["id"]) || Proponente.new # Encontra ou cria um novo se não achar (caso de ID inválido)
+    else
+                   Proponente.new # Cria novo para validação
+    end
+
+    # Atribui os atributos do formulário ao objeto para que as validações sejam executadas
+    proponente.assign_attributes(params_hash)
+
+    if proponente.valid?
+      # Se o proponente for válido, enfileira o job
+      ProponenteJob.perform_later(params_hash)
+
+      # Resposta para o frontend: Redireciona para a show ou para a listagem
+      if proponente.id.present? # Se for uma atualização (proponente já tem ID)
+        render json: { status: "ok", message: "Proponente enfileirado para atualização.", redirect_to: proponente_path(proponente.id) }
+      else
+        # Para criação, não temos o ID do proponente recém-criado ainda (está no job).
+        # A opção mais simples é redirecionar para a listagem, onde ele aparecerá.
+        render json: { status: "ok", message: "Proponente enfileirado para criação.", redirect_to: proponentes_path }
+      end
+    else
+      # Se a validação falhar AQUI (antes de enfileirar), retorna os erros para o frontend
+      render json: { status: "error", message: "Erro de validação", errors: proponente.errors.full_messages }, status: :unprocessable_entity
+    end
   rescue => e
-    # Em caso de erro ao enfileirar (raro, mas possível), retorna um erro para o frontend.
+    # Em caso de erro ao enfileirar ou outro erro inesperado, retorna para o frontend.
+    Rails.logger.error "Erro no enfileiramento do proponente: #{e.message} com params: #{params_hash.inspect}"
     render json: { status: "error", message: e.message }, status: :unprocessable_entity
   end
 
