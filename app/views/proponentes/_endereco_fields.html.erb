@@ -1,0 +1,34 @@
+<%# app/views/proponentes/_endereco_fields.html.erb %>
+<div class="nested-fields mb-3 p-3 border rounded bg-light">
+  <h5>Endereço</h5>
+  <div class="mb-2">
+    <%= f.label :logradouro %>
+    <%= f.text_field :logradouro, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :numero %>
+    <%= f.text_field :numero, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :bairro %>
+    <%= f.text_field :bairro, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :cidade %>
+    <%= f.text_field :cidade, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :estado %>
+    <%= f.text_field :estado, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.label :cep %>
+    <%= f.text_field :cep, class: "form-control" %>
+  </div>
+  <% if f.object.persisted? %>
+    <div class="form-check mb-2">
+      <%= f.check_box :_destroy, class: "form-check-input" %>
+      <%= f.label :_destroy, "Remover Endereço", class: "form-check-label" %>
+    </div>
+  <% end %>
+</div>

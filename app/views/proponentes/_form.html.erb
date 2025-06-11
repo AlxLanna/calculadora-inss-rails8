@@ -1,0 +1,83 @@
+<%# app/views/proponentes/_form.html.erb %>
+
+<%= form_with(model: proponente, url: enfileirar_proponente_proponentes_path, local: false, data: { controller: "proponente-form" }) do |f| %>
+  
+  <%= f.hidden_field :id %> 
+
+  <% if proponente.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(proponente.errors.count, "erro") %> impediram que este proponente fosse salvo:</h2>
+      <ul>
+        <% proponente.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <h3>Dados do Proponente</h3>
+  <div class="mb-3">
+    <%= f.label :nome %>
+    <%= f.text_field :nome, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :documentos, "Documentos (CPF/RG)" %>
+    <%= f.text_field :documentos, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :data_nascimento, "Data de Nascimento" %>
+    <%= f.date_field :data_nascimento, class: "form-control" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :salario, "Salário (R$)" %>
+    <%= f.number_field :salario, step: :any, class: "form-control",
+                       data: { action: "input->proponente-form#calcularInss", "proponente-form-target": "salarioInput" } %>
+    <small id="inss_desconto_exibicao" class="form-text text-muted"
+           data-proponente-form-target="inssDescontoExibicao">Desconto INSS: R$ 0,00</small>
+    <%= f.hidden_field :desconto_inss, data: { "proponente-form-target": "inssDescontoHidden" } %>
+  </div>
+
+  <hr>
+
+  <h3>Endereços</h3>
+  <div id="enderecos_fields" data-proponente-form-target="enderecosFields">
+    <%= f.fields_for :enderecos do |endereco_fields| %>
+      <%= render "endereco_fields", f: endereco_fields %>
+    <% end %>
+  </div>
+  <button type="button" class="btn btn-secondary mb-3" data-action="click->proponente-form#addEndereco">Adicionar Endereço</button>
+
+  <hr>
+
+  <h3>Contatos</h3>
+  <div id="contatos_fields" data-proponente-form-target="contatosFields">
+    <%= f.fields_for :contatos do |contato_fields| %>
+      <%= render "contato_fields", f: contato_fields %>
+    <% end %>
+  </div>
+  <button type="button" class="btn btn-secondary mb-3" data-action="click->proponente-form#addContato">Adicionar Contato</button>
+
+  <hr>
+
+  <div class="mb-3">
+    <%= f.submit "Salvar Proponente", class: "btn btn-primary", data: { action: "proponente-form#submitForm" } %>
+  </div>
+
+  <%# ==================================================================== %>
+  <%# Templates para campos aninhados (escondidos)                         %>
+  <%# O JavaScript irá clonar e usar estes templates para adicionar campos %>
+  <%# ==================================================================== %>
+
+  <template id="enderecos_template">
+    <%= f.fields_for :enderecos, Proponente.new.enderecos.build, child_index: "NEW_RECORD" do |endereco_fields| %>
+      <%= render "endereco_fields", f: endereco_fields %>
+    <% end %>
+  </template>
+
+  <template id="contatos_template">
+    <%= f.fields_for :contatos, Proponente.new.contatos.build, child_index: "NEW_RECORD" do |contato_fields| %>
+      <%= render "contato_fields", f: contato_fields %>
+    <% end %>
+  </template>
+
+<% end %>

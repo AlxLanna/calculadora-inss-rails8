@@ -1,0 +1,12 @@
+# config/tabela_inss.yml
+# Tabela de Alíquotas INSS
+# Os valores são strings para garantir a precisão
+faixas_atuais:
+  - limite_max: "1412.00"
+    aliquota: "0.075"
+  - limite_max: "2666.68"
+    aliquota: "0.09"
+  - limite_max: "4000.03"
+    aliquota: "0.12"
+  - limite_max: "7786.02"
+    aliquota: "0.14"

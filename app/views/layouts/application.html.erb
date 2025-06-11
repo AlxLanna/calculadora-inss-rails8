@@ -19,9 +19,29 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-  </head>
+    
+    <%# Google Charts %>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>google.charts.load('current', {'packages':['corechart']});</script>
 
+    <%= javascript_importmap_tags %>
+  </head>
+  
   <body>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+
+    <div style="padding: 10px; text-align: right;">
+      <% if user_signed_in? %>
+        Olá, <%= current_user.email %>!
+        <%= link_to "Editar Perfil", edit_user_registration_path %>
+        <%= link_to "Sair", destroy_user_session_path, data: { turbo_method: :delete } %>
+      <% else %>
+        <%= link_to "Cadastrar", new_user_registration_path %>
+        <%= link_to "Entrar", new_user_session_path %>
+      <% end %>
+    </div>
+
     <%= yield %>
   </body>
 </html>
