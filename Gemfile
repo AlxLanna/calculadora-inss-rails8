@@ -57,7 +57,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Popular db
-  gem "faker", "~> 2.0"
+  gem "faker", "~> 3.5"
 
   # Paginação
   gem "kaminari"
