@@ -2,6 +2,7 @@ class ProponentesController < ApplicationController
   # Redireciona usuários não autenticados para a página de login
   before_action :authenticate_user!
   before_action :authenticate_admin!, only: [:destroy] 
+  before_action :authorize_proponente_edit, only: [:edit]
 
   def index
     # Paginação
@@ -118,7 +119,11 @@ class ProponentesController < ApplicationController
   # Endpoint para receber os dados do formulário via AJAX e enfileirar o job.
   # Destino da submissão do formulário pelo Stimulus.
   def enfileirar_proponente
+
     params_hash = proponente_params.to_unsafe_h
+
+    # Se for um novo proponente (sem ID), o user_id é o criador.
+    params_hash["user_id"] = current_user.id if current_user.present?
 
     # Cria ou encontra o proponente para validação prévia
     proponente = if params_hash["id"].present?
@@ -170,6 +175,7 @@ class ProponentesController < ApplicationController
       :data_nascimento,
       :salario,
       :desconto_inss,
+      :user_id,
       enderecos_attributes: [
         :id,
         :logradouro,
@@ -187,5 +193,15 @@ class ProponentesController < ApplicationController
         :_destroy
       ]
     )
+  end
+
+  # somente o usuário que criou o proponente e o adm podem editar
+  def authorize_proponente_edit
+    @proponente = Proponente.find(params[:id]) # Garante que o proponente é carregado
+    unless current_user.admin? || @proponente.user == current_user
+      redirect_to proponentes_path, alert: "Você não tem permissão para editar este proponente."
+    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to proponentes_path, alert: "Proponente não encontrado."
   end
 end

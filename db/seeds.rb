@@ -5,6 +5,13 @@ Proponente.destroy_all
 
 puts "Criando proponentes com dados fictícios..."
 
+default_user = User.first_or_create!(
+  email: 'alexandre.lanna@123.com',
+  password: '123456',
+  password_confirmation: '123456'
+  admin: true
+)
+
 50.times do |i| # Criar x proponentes para ter mais dados para a dashboard/paginação
   salario_base = Faker::Number.between(from: 700.00, to: 8000.00).round(2)
   desconto = CalculadoraInss.calculate(salario_base) # Use seu service para o cálculo
@@ -14,7 +21,8 @@ puts "Criando proponentes com dados fictícios..."
     documentos: Faker::IDNumber.brazilian_citizen_number, # CPF fictício
     data_nascimento: Faker::Date.birthday(min_age: 18, max_age: 65),
     salario: salario_base,
-    desconto_inss: desconto
+    desconto_inss: desconto,
+    user: default_user
   )
 
   # Adiciona entre 1 e 3 endereços para cada proponente

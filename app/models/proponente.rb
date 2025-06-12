@@ -1,5 +1,6 @@
 class Proponente < ApplicationRecord
     # Se um proponente for destruido, endereço e contato também são
+    belongs_to :user
     has_many :enderecos, dependent: :destroy
     has_many :contatos, dependent: :destroy
 
