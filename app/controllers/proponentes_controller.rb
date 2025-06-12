@@ -1,6 +1,7 @@
 class ProponentesController < ApplicationController
   # Redireciona usuários não autenticados para a página de login
   before_action :authenticate_user!
+  before_action :authenticate_admin!, only: [:destroy] 
 
   def index
     # Paginação
@@ -32,6 +33,15 @@ class ProponentesController < ApplicationController
   end
 
   def destroy
+    @proponente = Proponente.find(params[:id])
+    if @proponente.destroy
+      redirect_to proponentes_path, notice: "Proponente excluído com sucesso!"
+    else
+      # Em caso de falha na exclusão
+      redirect_to proponentes_path, alert: "Falha ao excluir proponente: #{@proponente.errors.full_messages.to_sentence}"
+    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to proponentes_path, alert: "Proponente não encontrado."
   end
 
   def dashboard
@@ -145,6 +155,12 @@ class ProponentesController < ApplicationController
   # =========================================================================
 
   private
+
+  def authenticate_admin!
+    unless current_user&.admin? # 'current_user' é um helper do Devise
+      redirect_to root_path, alert: "Você não tem permissão para realizar esta ação."
+    end
+  end
 
   def proponente_params
     params.require(:proponente).permit(
